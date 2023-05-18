@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>点击预测</title>
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <link rel="stylesheet" href="../css/mim-common-h5.css" type="text/css">
+    <style>
+        header {
+            background: #409eff;
+            color: #ffffff;
+            height: 100px;
+            font-size: 20px;
+        }
+
+        .ball_div {
+            width: 90%;
+            height: calc(80vh - 50px);
+            margin: calc(4vh) auto 0;
+            background: #ffffff;
+            border: 5px dashed #52d3bb;
+            border-radius: 10px;
+            position: relative;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        .ball_div .mim-table tr th {
+            color: #000000;
+            font-weight: bold;
+            font-size: 14px;
+            text-align: center;
+        }
+
+        .ball_div .list tr td {
+            text-align: center;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<header>
+    <h1 style="font-size: 20px;float: left;margin: 30px"><span id="spanid">竞猜足球</span></h1>
+</header>
+<div class="ball_div">
+    <mim-table style="width: 100%" stripe="true" border="true">
+        <table class="mim-table mim-table-header-wrapper">
+            <tr>
+                <th class="is-leaf" width="60">
+                    <div class="cell">编号</div>
+                </th>
+                <th class="is-leaf" width="150">
+                    <div class="cell">赛事</div>
+                </th>
+                <th class="is-leaf" width="100">
+                    <div class="cell">操作</div>
+                </th>
+            </tr>
+        </table>
+        <table class="mim-table mim-table-body-wrapper list"></table>
+    </mim-table>
+</div>
+
+<body>
+<script src="../js/jquery.js"></script>
+<script src="../js/mim-common.js"></script>
+<script>
+    var key_time = window.location.search.substring(1);
+    init();
+
+    function init() {
+        MIM.ajaxUtils('http://www.taoerhuo.top/curl/public/index.php/admin/index/handleMsg', {
+            key_time: key_time
+        }, 'true', 'post', 'json', function (data) {
+            if (data.code == 200) {
+                var retData = data.data;
+                var html = appendHtml(retData);
+                $('.list').append(html);
+                $('mim-table').find('.mim-table tr .is-leaf').css('borderRight', '1px solid #ebeef5')
+            } else {
+                MIM.prompt('失败', 'danger', 2000);
+            }
+        }, function (ret) {
+            MIM.prompt('失败', 'danger', 2000);
+        });
+    }
+
+    function appendHtml(ret) {
+        var data = ret;
+        var html = '';
+        $.each(data, function (i, val) {
+            var consequence = '',letConsequence = '';
+            html += '<tr><td class="is-leaf" width="60">';
+            html += '<div class="cell">' + val["week_number"] + '</div></td>';
+            html += ' <td class="is-leaf" width="150">';
+            html += ' <div class="cell">'+val["home_team"]+'&nbsp;<span style="color: #f56c6c;font-weight: bold">'+val["record"]+'</span>&nbsp;'+val["visiting_team"]+'</div></td>';
+            html += ' <td class="is-leaf" width="100">';
+            html += ' <div class="cell"><mim-button onclick="goTo(this)" indexId='+val["id"]+' type="primary" style="height: 28px;line-height: 28px;">预测</mim-button></div></td></tr>';
+        });
+        return html;
+    }
+
+    function goTo(that) {
+        var id = $(that).attr('indexId');
+        window.location.href = "./h5-compile-details.html?id="+id+"&key_time="+key_time
+    }
+
+</script>
+</body>
+</html>

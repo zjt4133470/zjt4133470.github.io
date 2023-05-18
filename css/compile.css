@@ -1,0 +1,44 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-size: 14px;
+}
+
+.compile_div {
+    width: 50%;
+    height: calc(80vh);
+    margin: calc(10vh) auto 0;
+    background: #ffffff;
+    border: 10px dashed #52d3bb;
+    border-radius: 10px;
+    position: relative;
+}
+
+.compile_div p {
+    margin-top: 15px;
+}
+
+.compile_div p strong {
+    font-size: 18px;
+}
+
+.compile_div p label strong {
+    width: 120px;
+    display: inline-block;
+    text-align: right;
+    font-size: 16px;
+}
+
+.mim-table-header-wrapper tr th div {
+    font-size: 14px;
+    font-weight: bold;
+    color: #343434
+}
+
+mim-input {
+    margin-left: 12px;
+}
+
+.analyze{
+    display: none;
+}

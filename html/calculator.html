@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>所得计算器</title>
+    <link rel="stylesheet" href="../css/mim-common.css" type="text/css">
+    <link rel="stylesheet" href="../css/index.css" type="text/css">
+    <style>
+        table .is-leaf {
+            text-align: center !important;
+            border-right: 1px solid #ebeef5;
+        }
+
+        .numCount li {
+            float: left;
+            width: 25%;
+            text-align: center;
+            list-style: none
+        }
+
+        .numCount li .item {
+            margin: 0 10px;
+        }
+
+        .numCount li .numU {
+            line-height: 1.3;
+        }
+
+        .numCount li .numCX {
+            font-size: 54px;
+            color: #42B983;
+        }
+
+        .multiplying-power {
+            width: 150px;
+            cursor: pointer !important;
+            -webkit-appearance: none;
+            background-color: #fff;
+            background-image: none;
+            border-radius: 4px;
+            border: 1px solid #dcdfe6;
+            box-sizing: border-box;
+            color: #606266;
+            display: inline-block;
+            font-size: inherit;
+            height: 40px;
+            line-height: 40px;
+            outline: none;
+            padding: 0 15px;
+            transition: border-color .2s cubic-bezier(.645, .045, .355, 1);
+        }
+        .string-label label{
+            margin-left: 5px;
+        }
+        .string-label label span{
+            vertical-align: middle;
+            margin-left: 2px;
+        }
+        .string-label label input{
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body>
+<div class="ball_div">
+    <mim-container>
+        <mim-header style="background: #f4f4f4">
+            <mim-row>
+                <mim-col span="24" style="font-size: 35px;font-weight: bold;text-align: center">所得计算器</mim-col>
+            </mim-row>
+        </mim-header>
+        <mim-main style="overflow-y: scroll;height: calc(68vh);overflow-x: hidden">
+            <mim-row>
+                <mim-col span="8">
+                    <mim-table style="width: 100%">
+                        <table class="mim-table mim-table-header-wrapper">
+                            <tr>
+                                <th class="is-leaf">
+                                    <div class="cell" style="font-size: 20px">你的单子</div>
+                                </th>
+                            </tr>
+                        </table>
+                        <table class="mim-table mim-table-header-wrapper">
+                            <tr>
+                                <th class="is-leaf">
+                                    <div class="cell string-label" style="font-size: 20px">
+                                        <label><input type="checkbox" name="string"><span>二串一</span></label>
+                                        <label><input type="checkbox" name="string"><span>三串一</span></label>
+                                        <label><input type="checkbox" name="string"><span>四串一</span></label>
+                                        <label><input type="checkbox" name="string"><span>五串一</span></label>
+                                        <label><input type="checkbox" name="string"><span>六串一</span></label>
+                                        <label><input type="checkbox" name="string"><span>七串一</span></label>
+                                        <label><input type="checkbox" name="string"><span>八串一</span></label>
+                                    </div>
+                                </th>
+                            </tr>
+                        </table>
+                        <table class="mim-table mim-table-header-wrapper">
+                            <tr>
+                                <th class="is-leaf" width="100">
+                                    <div class="cell">是否红单</div>
+                                </th>
+                                <th class="is-leaf" width="200">
+                                    <div class="cell">所得倍率</div>
+                                </th>
+                                <th class="is-leaf">
+                                    <div class="cell">
+                                        <mim-button type="success" size="mini" onclick="addTr()">添加</mim-button>
+                                    </div>
+                                </th>
+                            </tr>
+                        </table>
+                        <table class="mim-table mim-table-body-wrapper list">
+                            <tr>
+                                <td class="is-leaf" width="100">
+                                    <div class="cell">
+                                        <input type="checkbox" class="mim-checkbox"
+                                               style="width: 20px;height: 20px;cursor: pointer;vertical-align: middle">
+                                        <span style="font-size: 16px;color: #666666;vertical-align: middle;margin-left: 5px">黑</span>
+                                    </div>
+                                </td>
+                                <td class="is-leaf" width="200">
+                                    <div class="cell">
+                                        <input type="number" placeholder="请输入所得倍率" class="multiplying-power"/>
+                                    </div>
+                                </td>
+                                <td class="is-leaf">
+                                    <div class="cell">
+                                        <mim-button type="danger" disabled size="mini" style="height: 28px;line-height: 28px" title='不可删除'>
+                                            删除
+                                        </mim-button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="is-leaf" width="100">
+                                    <div class="cell">
+                                        <input type="checkbox" class="mim-checkbox"
+                                               style="width: 20px;height: 20px;cursor: pointer;vertical-align: middle">
+                                        <span style="font-size: 16px;color: #666666;vertical-align: middle;margin-left: 5px">黑</span>
+                                    </div>
+                                </td>
+                                <td class="is-leaf" width="200">
+                                    <div class="cell">
+                                        <input type="number" placeholder="请输入所得倍率" class="multiplying-power"/>
+                                    </div>
+                                </td>
+                                <td class="is-leaf">
+                                    <div class="cell">
+                                        <mim-button type="danger" disabled size="mini" style="height: 28px;line-height: 28px" title='不可删除'>
+                                            删除
+                                        </mim-button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </mim-table>
+                </mim-col>
+                <mim-col span="8" style="text-align: center">
+                    <mim-button style="margin-top: calc(30vh);width: 200px" type="primary" round
+                                onClick="calculateFn()">点击计算
+                    </mim-button>
+                </mim-col>
+                <mim-col span="8">
+                    <div class="numCount">
+                        <ul class="clearfix">
+                            <li>
+                                <div class="item" style="margin-top: 20px">
+                                    <h2 style="font-size: 20px">所得金额：</h2>
+                                    <div class="numU"><span class="numCX" data-startVal="0" data-endVal=""
+                                                            data-speed="4" data-decimals="2" id="mumC1">0</span></div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </mim-col>
+            </mim-row>
+        </mim-main>
+    </mim-container>
+</div>
+<script src="../js/jquery.js"></script>
+<script src="../js/mim-common.js"></script>
+<script src="../js/count.js"></script>
+<script>
+    var countCXArr = [];
+
+    function countCX() {
+        $('.numCount').each(function (i, dom) {
+            if (countCXArr[i] && countCXArr[i] === true) {
+                return;
+            }
+            var sT;
+            var ncTop;
+            sT = $(window).scrollTop();
+            ncTop = $(dom).offset().top;
+            var id, decimals, startVal, endVal, duration;
+            if (sT > ncTop - $(window).height() && sT < ncTop) {
+                $(dom).find('.numCX').each(function () {
+                    id = $(this).attr('id');
+                    decimals = $(this).attr('data-decimals'),
+                        startVal = $(this).attr('data-startVal'),
+                        endVal = $(this).attr('data-endVal'),
+                        duration = $(this).attr('data-speed');
+                    new CountUp(id, startVal, endVal, decimals, duration, {
+                        useEasing: true,//效果
+                        separator: ''//数字分隔符
+                    }).start();// target：目标元素id, startVal：你想要开始的值, endVal：你想要到达的值, decimals：小数位数，默认值为0, duration：动画持续时间为秒，默认值为2, options：选项的可选对象
+                    countCXArr[i] = true;
+                })
+            }
+        })
+    }
+
+    //点击计算
+    function calculateFn() {
+        $(".numU .numCX").attr("data-endVal", '123456.56');
+        countCX();
+    }
+
+    // 点击切换红黑
+    $(".list").on("click",'.mim-checkbox', function () {
+        if ($(this).prop('checked')) {
+            $(this).next().css({
+                color: "red",
+                fontWeight: "bold",
+                fontSize: "20px",
+            }).html("红")
+        } else {
+            $(this).next().css({
+                color: "#666",
+                fontWeight: "400",
+                fontSize: "16px",
+            }).html("黑")
+        }
+    });
+
+    //    点击添加
+    function addTr() {
+        if($(".list tr").length > 7 ){
+            MIM.prompt('最多8场', 'danger', 2000);
+        }else {
+            $(".list").append($("<tr>\n" +
+                "                                 <td class=\"is-leaf\" width=\"100\">\n" +
+                "                                     <div class=\"cell\">\n" +
+                "                                         <input type=\"checkbox\" class=\"mim-checkbox\" style=\"width: 20px;height: 20px;cursor: pointer;vertical-align: middle\">\n" +
+                "                                         <span style=\"font-size: 16px;color: #666666;vertical-align: middle;margin-left: 5px\">黑</span>\n" +
+                "                                     </div>\n" +
+                "                                 </td>\n" +
+                "                                 <td class=\"is-leaf\" width=\"200\">\n" +
+                "                                     <div class=\"cell\">\n" +
+                "                                         <input type=\"number\" placeholder=\"请输入所得倍率\" class=\"multiplying-power\"/>\n" +
+                "                                     </div>\n" +
+                "                                 </td>\n" +
+                "                                <td class=\"is-leaf\">\n" +
+                "                                    <div class=\"cell\">\n" +
+                "                                        <mim-button type=\"danger\" size=\"mini\" style=\"height: 28px;line-height: 28px\" onclick='delFn(this)'>删除</mim-button>\n" +
+                "                                    </div>\n" +
+                "                                </td>\n" +
+                "                             </tr>"));
+        }
+    }
+    //    点击删除
+    function delFn(that) {
+        console.log($(that));
+        $(that).parent().parent().parent().remove()
+    }
+
+
+</script>
+</body>
+</html>

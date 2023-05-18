@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+    <title>AI足球</title>
+    <link rel="stylesheet" href="./css/mim-common.css"/>
+    <link rel="stylesheet" href="./css/swiper-bundle.min.css"/>
+    <link rel="stylesheet" href="./css/index.css"/>
+</head>
+<body>
+<div id="M">
+    <header>
+        <mim-row>
+            <mim-col span="10" class="mim-flex-wrap-space-between">
+                <div class="mim-flex-vertical" style="margin-left: 5vw">
+                    <p class="ai">AI足球</p>
+                    <p id="change" class="mim-font-14">
+                        数据更新于：<span class="newTime"></span>
+                    </p>
+                </div>
+                <mim-button type="primary"
+                            id="dataSynchronizationFn"
+                            style="display: none"
+                            class="vipContentBtn">开启数据同步
+                </mim-button>
+                <mim-button type="primary" size="mini" id="goalsFn"
+                >总进球数计算
+                </mim-button
+                >
+            </mim-col>
+
+            <mim-col span="14"
+                     style="text-align: right"
+                     class="mim-flex-wrap-right">
+                <mim-select
+                        bool="false"
+                        id="timeSelect"
+                        placeholder="请选择日期"
+                ></mim-select>
+                <div style="display: inline-block; margin-left: 35px">
+                    <img src="" alt="" style="width: 30px; vertical-align: middle"/>
+                    <span class="user"></span>&nbsp;&nbsp;<span id="out"
+                >【退出】</span
+                >
+                </div>
+            </mim-col>
+        </mim-row>
+    </header>
+    <div class="ball_div mimClear">
+        <mim-loading class="loadingShow"></mim-loading>
+        <div class="firstShow">
+            <!--<img src="./images/out.png" style="width: 24px;cursor: pointer;position: absolute;right: 12px"
+                   class="delOutShow"/>
+              <p>机构理论利润率：<span></span></p>
+              <p>机构合理赔率：主胜合理赔率：<span></span>；平合理赔率：<span></span>；客胜合理赔率：<span></span></p>
+              <p>机构合理的胜平负真实机率：主胜机率：<span></span>；平机率：<span></span>；客胜机率：<span></span></p>
+              <p>机构合理的胜平负真实利润率：主胜利润率：<span></span>；平利润率：<span></span>；客胜利润率：<span></span></p>
+              <br/>
+              <p>竞彩官方赔付率：<span></span></p>
+              <p>竞彩官方利润率：竞彩主胜利润率：<span></span>；竞彩平利润率：<span></span>；竞彩客胜利润率：<span></span></p>
+              <p>理论竞彩官方开出赔率：竞彩主胜赔率：<span></span>；竞彩平赔率：<span></span>；竞彩客胜赔率：<span></span></p>
+              <p>理论比实际：主胜：<span></span>；平：<span></span>；客胜：<span></span></p>
+              <div style="margin-top: 20px">
+                  <h2>总结：</h2>
+                  <p style="margin-top: 10px">竞彩方向：<span style="font-size: 18px;"></span></p>
+                  <p>威廉希尔方向：<span style="font-size: 18px;"></span></p>
+                  <p>立博方向：<span style="font-size: 18px;"></span></p>
+              </div>-->
+        </div>
+
+        <div class="secondShow">
+            <!--<img src="./images/out.png" class="delOutShow"/>
+              <div style="text-align: center;margin: 48px auto 24px;">
+                  <mim-table style="text-align: center" border="true" id="secondShow-table">
+                      <table class="mim-table mim-table-header-wrapper">
+                          <tr>
+                              <th class="is-leaf" width="360">
+                                  <div class="cell">初盘</div>
+                              </th>
+                              <th class="is-leaf" width="360">
+                                  <div class="cell">即盘</div>
+                              </th>
+                          </tr>
+
+                      </table>
+                      <table class="mim-table mim-table-body-wrapper">
+                          <tr>
+                              <td class="is-leaf" width="120">
+                                  <div class="cell">初赔：<b class="mimRed v-m"></b></div>
+                              </td>
+                              <td class="is-leaf" width="120">
+                                  <div class="cell"></div>
+                              </td>
+                              <td class="is-leaf" width="120">
+                                  <div class="cell">即赔：<b class="mimGreen v-m"></b></div>
+                              </td>
+                              <td class="is-leaf" width="120">
+                                  <div class="cell">高水：<b class="mimRed v-m"></b></div>
+                              </td>
+                              <td class="is-leaf" width="120">
+                                  <div class="cell"></div>
+                              </td>
+                              <td class="is-leaf" width="120">
+                                  <div class="cell">低水：<b class="mimGreen v-m"></b></div>
+                              </td>
+                          </tr>
+                      </table>
+                  </mim-table>
+                  <div class="mimGold mim-fontBold-18 peroration">阿金大家看</div>
+              </div>-->
+        </div>
+
+        <div class="threeShow">
+            <img src="./images/out.png" class="delOutShow"/>
+            <div style="text-align: center; margin: 48px auto 24px">
+                <div class="mim-flex-wrap-space-between football_table_number">
+                    <mim-table
+                            style="text-align: center"
+                            border="true"
+                            id="threeShow-table"
+                    >
+                        <table class="mim-table mim-table-header-wrapper">
+                            <tr>
+                                <th class="is-leaf" width="150">
+                                    <div class="cell">近五场主队的比分</div>
+                                </th>
+                                <th class="is-leaf" width="100">
+                                    <div class="cell">主场or客场</div>
+                                </th>
+                                <th class="is-leaf" width="240">
+                                    <div class="cell">主场比分</div>
+                                </th>
+                                <th class="is-leaf" width="240">
+                                    <div class="cell">客场比分</div>
+                                </th>
+                            </tr>
+                        </table>
+                        <table
+                                class="mim-table mim-table-body-wrapper"
+                                id="calculate-table"
+                        >
+                            <tr>
+                                <td class="is-leaf" width="150">
+                                    <div class="cell">第一场</div>
+                                </td>
+                                <td class="is-leaf" width="100">
+                                    <div class="cell">
+                                        <div class="switch">
+                                            <input type="checkbox" id="toggle1" class="toggle"/>
+                                            <label for="toggle1" class="label"></label>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="is-leaf" width="120">
+                                    <div class="cell">
+                                        <mim-input type="tel" class="i-v-m"></mim-input>
+                                    </div>
+                                </td>
+                                <td class="is-leaf" width="120">
+                                    <div class="cell">
+                                        <mim-input type="tel" class="i-v-m"></mim-input>
+                                    </div>
+                                </td>
+                                <td class="is-leaf" width="120">
+                                    <div class="cell">
+                                        <mim-input
+                                                type="tel"
+                                                disabled="disabled"
+                                                class="i-v-m"
+                                                value="禁用"
+                                        ></mim-input>
+                                    </div>
+                                </td>
+                                <td class="is-leaf" width="120">
+                                    <div class="cell">
+                                        <mim-input
+                                                type="tel"
+                                                disabled="disabled"
+                                                class="i-v-m"
+                                                value="禁用"
+                                        ></mim-input>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="is-leaf" width="150">
+                                    <div class="cell">第二场</div>
+                                </td>
+                                <td class="is-leaf" width="100">
+                                    <div class="cell">
+                                        <div class="switch">
+                                            <input type="checkbox" id="toggle2" class="toggle"/>
+                                            <label for="toggle2" class="label"></label>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="is-leaf" width="120">
+                                    <div class="cell">
+                                        <mim-input type="tel" class="i-v-m"></mim-input>
+                                    </div>
+                                </td>
+                                <td class="is-leaf" width="120">
+                                    <div class="cell">
+                                        <mim-input type="tel" class="i-v-m"></mim-input>
+                                    </div>
+                                </td>
+                                <td class="is-leaf" width="120">
+                                    <div class="cell">
+                                        <mim-input
+                                                type="tel"
+                                                disabled="disabled"
+                                                class="i-v-m"
+                                                value="禁用"
+                                        ></mim-input>
+                                    </div>
+                                </td>
+                                <td class="is-leaf" width="120">
+                                    <div class="cell">
+                                        <mim-input
+                                                type="tel"
+                                                disabled="disabled"
+                                                class="i-v-m"
+                                                value="禁用"
+                                        ></mim-input>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="is-leaf" width="150">
+                                    <div class="cell">第三场</div>
+                                </td>
+                                <td class="is-leaf" width="100">
+                                    <div class="cell">
+                                        <div class="switch">
+                                            <input type="checkbox" id="toggle3" class="toggle"/>
+                                            <label for="toggle3" class="label"></label>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="is-leaf" width="120">
+                                    <div class="cell">
+                                        <mim-input type="tel" class="i-v-m"></mim-input>
+                                    </div>
+                                </td>
+                                <td class="is-leaf" width="120">
+                                    <div class="cell">
+                                        <mim-input type="tel" class="i-v-m"></mim-input>
+                                    </div>
+                                </td>
+                                <td class="is-leaf" width="120">
+                                    <div class="cell">
+                                        <mim-input
+                                                type="tel"
+                                                disabled="disabled"
+                                                class="i-v-m"
+                                                value="禁用"
+                                        ></mim-input>
+                                    </div>
+                                </td>
+                                <td class="is-leaf" width="120">
+                                    <div class="cell">
+                                        <mim-input
+                                                type="tel"
+                                                disabled="disabled"
+                                                class="i-v-m"
+                                                value="禁用"
+                                        ></mim-input>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="is-leaf" width="150">
+                                    <div class="cell">第四场</div>
+                                </td>
+                                <td class="is-leaf" width="100">
+                                    <div class="cell">
+                                        <div class="switch">
+                                            <input type="checkbox" id="toggle4" class="toggle"/>
+                                            <label for="toggle4" class="label"></label>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="is-leaf" width="120">
+                                    <div class="cell">
+                                        <mim-input type="tel" class="i-v-m"></mim-input>
+                                    </div>
+                                </td>
+                                <td class="is-leaf" width="120">
+                                    <div class="cell">
+                                        <mim-input type="tel" class="i-v-m"></mim-input>
+                                    </div>
+                                </td>
+                                <td class="is-leaf" width="120">
+                                    <div class="cell">
+                                        <mim-input
+                                                type="tel"
+                                                disabled="disabled"
+                                                class="i-v-m"
+                                                value="禁用"
+                                        ></mim-input>
+                                    </div>
+                                </td>
+                                <td class="is-leaf" width="120">
+                                    <div class="cell">
+                                        <mim-input
+                                                type="tel"
+                                                disabled="disabled"
+                                                class="i-v-m"
+                                                value="禁用"
+                                        ></mim-input>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="is-leaf" width="150">
+                                    <div class="cell">第五场</div>
+                                </td>
+                                <td class="is-leaf" width="100">
+                                    <div class="cell">
+                                        <div class="switch">
+                                            <input type="checkbox" id="toggle5" class="toggle"/>
+                                            <label for="toggle5" class="label"></label>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="is-leaf" width="120">
+                                    <div class="cell">
+                                        <mim-input type="tel" class="i-v-m"></mim-input>
+                                    </div>
+                                </td>
+                                <td class="is-leaf" width="120">
+                                    <div class="cell">
+                                        <mim-input type="tel" class="i-v-m"></mim-input>
+                                    </div>
+                                </td>
+                                <td class="is-leaf" width="120">
+                                    <div class="cell">
+                                        <mim-input
+                                                type="tel"
+                                                disabled="disabled"
+                                                class="i-v-m"
+                                                value="禁用"
+                                        ></mim-input>
+                                    </div>
+                                </td>
+                                <td class="is-leaf" width="120">
+                                    <div class="cell">
+                                        <mim-input
+                                                type="tel"
+                                                disabled="disabled"
+                                                class="i-v-m"
+                                                value="禁用"
+                                        ></mim-input>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </mim-table>
+                    <div class="mim-flex-vertical">
+                        <mim-button type="primary" class="beginCalculate"
+                        >开始计算
+                        </mim-button
+                        >
+                        <div
+                                class="mimGold mim-font-14 goals-scored"
+                                style="margin-top: 20px"
+                        ></div>
+                        <div
+                                class="mimGold mim-fontBold-18 goals-scored-number"
+                                style="margin-top: 8px"
+                        ></div>
+                    </div>
+                    <mim-table
+                            style="text-align: center"
+                            border="true"
+                            id="fourShow-table"
+                    >
+                        <table class="mim-table mim-table-header-wrapper">
+                            <tr>
+                                <th class="is-leaf" width="150">
+                                    <div class="cell">近五场客队的比分</div>
+                                </th>
+                                <th class="is-leaf" width="100">
+                                    <div class="cell">主场or客场</div>
+                                </th>
+                                <th class="is-leaf" width="240">
+                                    <div class="cell">主场比分</div>
+                                </th>
+                                <th class="is-leaf" width="240">
+                                    <div class="cell">客场比分</div>
+                                </th>
+                            </tr>
+                        </table>
+                        <table
+                                class="mim-table mim-table-body-wrapper"
+                                id="visiting-table"
+                        >
+                            <tr>
+                                <td class="is-leaf" width="150">
+                                    <div class="cell">第一场</div>
+                                </td>
+                                <td class="is-leaf" width="100">
+                                    <div class="cell">
+                                        <div class="switch">
+                                            <input type="checkbox" id="toggle6" class="toggle"/>
+                                            <label for="toggle6" class="label"></label>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="is-leaf" width="120">
+                                    <div class="cell">
+                                        <mim-input type="tel" class="i-v-m"></mim-input>
+                                    </div>
+                                </td>
+                                <td class="is-leaf" width="120">
+                                    <div class="cell">
+                                        <mim-input type="tel" class="i-v-m"></mim-input>
+                                    </div>
+                                </td>
+                                <td class="is-leaf" width="120">
+                                    <div class="cell">
+                                        <mim-input
+                                                type="tel"
+                                                disabled="disabled"
+                                                class="i-v-m"
+                                                value="禁用"
+                                        ></mim-input>
+                                    </div>
+                                </td>
+                                <td class="is-leaf" width="120">
+                                    <div class="cell">
+                                        <mim-input
+                                                type="tel"
+                                                disabled="disabled"
+                                                class="i-v-m"
+                                                value="禁用"
+                                        ></mim-input>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="is-leaf" width="150">
+                                    <div class="cell">第二场</div>
+                                </td>
+                                <td class="is-leaf" width="100">
+                                    <div class="cell">
+                                        <div class="switch">
+                                            <input type="checkbox" id="toggle7" class="toggle"/>
+                                            <label for="toggle7" class="label"></label>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="is-leaf" width="120">
+                                    <div class="cell">
+                                        <mim-input type="tel" class="i-v-m"></mim-input>
+                                    </div>
+                                </td>
+                                <td class="is-leaf" width="120">
+                                    <div class="cell">
+                                        <mim-input type="tel" class="i-v-m"></mim-input>
+                                    </div>
+                                </td>
+                                <td class="is-leaf" width="120">
+                                    <div class="cell">
+                                        <mim-input
+                                                type="tel"
+                                                disabled="disabled"
+                                                class="i-v-m"
+                                                value="禁用"
+                                        ></mim-input>
+                                    </div>
+                                </td>
+                                <td class="is-leaf" width="120">
+                                    <div class="cell">
+                                        <mim-input
+                                                type="tel"
+                                                disabled="disabled"
+                                                class="i-v-m"
+                                                value="禁用"
+                                        ></mim-input>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="is-leaf" width="150">
+                                    <div class="cell">第三场</div>
+                                </td>
+                                <td class="is-leaf" width="100">
+                                    <div class="cell">
+                                        <div class="switch">
+                                            <input type="checkbox" id="toggle8" class="toggle"/>
+                                            <label for="toggle8" class="label"></label>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="is-leaf" width="120">
+                                    <div class="cell">
+                                        <mim-input type="tel" class="i-v-m"></mim-input>
+                                    </div>
+                                </td>
+                                <td class="is-leaf" width="120">
+                                    <div class="cell">
+                                        <mim-input type="tel" class="i-v-m"></mim-input>
+                                    </div>
+                                </td>
+                                <td class="is-leaf" width="120">
+                                    <div class="cell">
+                                        <mim-input
+                                                type="tel"
+                                                disabled="disabled"
+                                                class="i-v-m"
+                                                value="禁用"
+                                        ></mim-input>
+                                    </div>
+                                </td>
+                                <td class="is-leaf" width="120">
+                                    <div class="cell">
+                                        <mim-input
+                                                type="tel"
+                                                disabled="disabled"
+                                                class="i-v-m"
+                                                value="禁用"
+                                        ></mim-input>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="is-leaf" width="150">
+                                    <div class="cell">第四场</div>
+                                </td>
+                                <td class="is-leaf" width="100">
+                                    <div class="cell">
+                                        <div class="switch">
+                                            <input type="checkbox" id="toggle9" class="toggle"/>
+                                            <label for="toggle9" class="label"></label>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="is-leaf" width="120">
+                                    <div class="cell">
+                                        <mim-input type="tel" class="i-v-m"></mim-input>
+                                    </div>
+                                </td>
+                                <td class="is-leaf" width="120">
+                                    <div class="cell">
+                                        <mim-input type="tel" class="i-v-m"></mim-input>
+                                    </div>
+                                </td>
+                                <td class="is-leaf" width="120">
+                                    <div class="cell">
+                                        <mim-input
+                                                type="tel"
+                                                disabled="disabled"
+                                                class="i-v-m"
+                                                value="禁用"
+                                        ></mim-input>
+                                    </div>
+                                </td>
+                                <td class="is-leaf" width="120">
+                                    <div class="cell">
+                                        <mim-input
+                                                type="tel"
+                                                disabled="disabled"
+                                                class="i-v-m"
+                                                value="禁用"
+                                        ></mim-input>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="is-leaf" width="150">
+                                    <div class="cell">第五场</div>
+                                </td>
+                                <td class="is-leaf" width="100">
+                                    <div class="cell">
+                                        <div class="switch">
+                                            <input type="checkbox" id="toggle10" class="toggle"/>
+                                            <label for="toggle10" class="label"></label>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="is-leaf" width="120">
+                                    <div class="cell">
+                                        <mim-input type="tel" class="i-v-m"></mim-input>
+                                    </div>
+                                </td>
+                                <td class="is-leaf" width="120">
+                                    <div class="cell">
+                                        <mim-input type="tel" class="i-v-m"></mim-input>
+                                    </div>
+                                </td>
+                                <td class="is-leaf" width="120">
+                                    <div class="cell">
+                                        <mim-input
+                                                type="tel"
+                                                disabled="disabled"
+                                                class="i-v-m"
+                                                value="禁用"
+                                        ></mim-input>
+                                    </div>
+                                </td>
+                                <td class="is-leaf" width="120">
+                                    <div class="cell">
+                                        <mim-input
+                                                type="tel"
+                                                disabled="disabled"
+                                                class="i-v-m"
+                                                value="禁用"
+                                        ></mim-input>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </mim-table>
+                </div>
+            </div>
+        </div>
+
+        <div class="particularsDiv">
+            <mim-table stripe="true" border="true" style="width: 100%">
+                <table class="mim-table mim-table-header-wrapper">
+                    <th colspan="6" class="is-leaf" style="text-align: center">
+                        <div
+                                class="cell mim-flex-wrap"
+                                style="position: relative; margin: 12px"
+                        >
+                            <div class="host_teamDetails">
+                                【主队】<span class="host mimRed"></span>
+                            </div>
+                            <div class="handicap mimRed"></div>
+                            <div class="vsDetails mimRed">VS</div>
+                            <div class="guest_teamDetails">
+                                <span class="guest mimBlue"></span>【客队】
+                            </div>
+                            <div class="mimMinor elapsed" style="margin-left: 10px"></div>
+                            <img
+                                    class="delOut"
+                                    src="./images/out.png"
+                                    style="
+                      width: 35px;
+                      cursor: pointer;
+                      position: absolute;
+                      right: 28px;
+                    "
+                            />
+                        </div>
+                    </th>
+                </table>
+                <table class="mim-table mim-table-body-wrapper">
+                    <div class="cell analyseNotDiv">
+                        <div class="analyseNot"></div>
+                        <mim-button
+                                type="primary"
+                                class="analyze justAnalyze"
+                                data-type="1"
+                                style="display: inline-block; margin-left: 20px"
+                        >+1球分析
+                        </mim-button>
+                        <mim-button
+                                type="danger"
+                                class="analyze loseAnalyze"
+                                data-type="2"
+                                style="display: inline-block; margin: 0 20px 0 10px"
+                        >-1球分析
+                        </mim-button>
+                    </div>
+                    <tr class="analyseShow">
+                        <th class="is-leaf" width="240px">
+                            <div class="cell">主客排名实力(纸面实力)分析</div>
+                        </th>
+                        <th class="is-leaf" width="240px">
+                            <div class="cell">本赛事近十场相同主客胜率</div>
+                        </th>
+                        <th class="is-leaf" width="240px">
+                            <div class="cell">本赛事近十场相同主客赢盘率</div>
+                        </th>
+                        <th class="is-leaf" width="240px">
+                            <div class="cell">近十场历史交锋胜率</div>
+                        </th>
+                        <th class="is-leaf" width="230px">
+                            <div class="cell">近十场历史交锋赢盘率</div>
+                        </th>
+                        <th class="is-leaf" width="240px">
+                            <div class="cell">竞彩官方即时赔率分析</div>
+                        </th>
+                        <th class="is-leaf">
+                            <div class="cell mim-flex-wrap-left">
+                                <div>必发指数分析</div>
+                                <div class="cut-off-red hintShow"></div>
+                            </div>
+                        </th>
+                    </tr>
+                    <tr class="analyseShow">
+                        <td class="is-leaf">
+                            <div class="cell power"></div>
+                        </td>
+                        <td class="is-leaf">
+                            <div class="cell rate"></div>
+                        </td>
+                        <td class="is-leaf">
+                            <div class="cell msgFp"></div>
+                        </td>
+                        <td class="is-leaf">
+                            <div class="cell mim-flex-wrap-left">
+                                <div class="winAnalysis"></div>
+                                <div class="cut-off-red">(仅参考,不做数据分析)</div>
+                            </div>
+                        </td>
+                        <td class="is-leaf">
+                            <div class="cell winPlate"></div>
+                        </td>
+                        <td class="is-leaf">
+                            <div class="cell mim-flex-wrap-left">
+                                <div class="europe"></div>
+                                <div class="europe-details cut-off"></div>
+                            </div>
+                        </td>
+                        <td class="is-leaf">
+                            <div class="cell mim-flex-wrap-left">
+                                <div class="outbox"></div>
+                                <div class="outbox-two" style="margin-left: 4px"></div>
+                                <div class="outbox-details cut-off"></div>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr class="analyseShow">
+                        <th class="is-leaf">
+                            <div class="cell">
+                                <b class="mimRed">*</b>欧指降赔公司分析
+                            </div>
+                        </th>
+                        <th class="is-leaf">
+                            <div class="cell"><b class="mimRed">*</b>投注比分析</div>
+                        </th>
+                        <th class="is-leaf">
+                            <div class="cell"><b class="mimRed">*</b>凯利值分析</div>
+                        </th>
+                        <th class="is-leaf">
+                            <div class="cell"><b class="mimRed">*</b>离散值分析</div>
+                        </th>
+                        <th class="is-leaf">
+                            <div class="cell mim-flex-wrap-left">
+                                <div><b class="mimRed">✻</b>理论利润率分析</div>
+                                <div class="cut-off-red profitShow"></div>
+                            </div>
+                        </th>
+                        <th class="is-leaf">
+                            <div class="mim-flex-wrap-space-between">
+                                <div class="cell"><b class="mimRed">✻</b>全概率比分析</div>
+                                <mim-button
+                                        type="primary"
+                                        size="mini"
+                                        id=""
+                                        style="margin-right: 12px"
+                                >图表
+                                </mim-button>
+                            </div>
+                        </th>
+                        <th class="is-leaf">
+                            <div class="mim-flex-wrap-space-between">
+                                <div class="cell">
+                                    <b class="mimRed">✻</b>重点概率比分析
+                                </div>
+                                <mim-button
+                                        type="primary"
+                                        size="mini"
+                                        id=""
+                                        style="margin-right: 12px"
+                                >图表
+                                </mim-button>
+                            </div>
+                        </th>
+                    </tr>
+                    <tr class="analyseShow">
+                        <td class="is-leaf">
+                            <div class="cell mim-flex-vertical">
+                                <div class="mim-flex-wrap-left" style="margin-left: 0.4rem">
+                                    <div class="comp"></div>
+                                    <div class="comp-two" style="margin-left: 4px"></div>
+                                </div>
+                                <div class="comp-details cut-off"></div>
+                            </div>
+                        </td>
+                        <td class="is-leaf">
+                            <div class="cell mim-flex-vertical">
+                                <div class="mim-flex-wrap-left" style="margin-left: 0.4rem">
+                                    <div class="then"></div>
+                                    <div class="then-two" style="margin-left: 4px"></div>
+                                </div>
+                                <div class="then-details cut-off"></div>
+                            </div>
+                        </td>
+                        <td class="is-leaf">
+                            <div class="cell mim-flex-vertical">
+                                <div class="mim-flex-wrap-left" style="margin-left: 0.4rem">
+                                    <div class="cayley"></div>
+                                    <div class="cayley-two" style="margin-left: 4px"></div>
+                                </div>
+                                <div class="cayley-details cut-off"></div>
+                            </div>
+                        </td>
+                        <td class="is-leaf">
+                            <div class="cell disperse"></div>
+                        </td>
+                        <td class="is-leaf">
+                            <div class="cell mim-flex-vertical">
+                                <div class="mim-flex-wrap-left" style="margin-left: 0.4rem">
+                                    <div class="profit"></div>
+                                    <div class="profit-two" style="margin-left: 4px"></div>
+                                </div>
+                                <div class="profit-details cut-off"></div>
+                            </div>
+                        </td>
+                        <td class="is-leaf">
+                            <div class="cell mim-flex-vertical">
+                                <div class="mim-flex-wrap-left" style="margin-left: 0.4rem">
+                                    <div class="probability-than-details-price"></div>
+                                    <div class="probability-than-details mim-fontBold-16"
+                                    ></div>
+                                </div>
+                                <div class="probability-than cut-off"></div>
+                            </div>
+                        </td>
+                        <td class="is-leaf">
+                            <div class="cell mim-flex-vertical">
+                                <div class="mim-flex-wrap-left" style="margin-left: 0.4rem">
+                                    <div class="probability-ratio-details-price"></div>
+                                    <div class="probability-ratio-details mim-fontBold-16"
+                                    ></div>
+                                </div>
+                                <div class="probability-ratio cut-off"></div>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr class="analyseShow">
+                        <th class="is-leaf" width="250px">
+                            <div class="cell">
+                                <b class="mimRed">*</b>竞彩官方<span class="mimRed"
+                            >（市场）</span
+                            >的胜平负概率
+                            </div>
+                        </th>
+                        <th class="is-leaf" width="240px">
+                            <div class="cell">
+                                <b class="mimRed">*</b>百家机构合理的胜平负真实机率
+                            </div>
+                        </th>
+                        <th class="is-leaf" width="240px">
+                            <div class="cell">
+                                <b class="mimRed">*</b>机构（初）与市场（即）的分析
+                            </div>
+                        </th>
+                        <th class="is-leaf" width="240px">
+                            <div class="cell">
+                                <b class="mimRed">*</b>机构与自身的分析
+                            </div>
+                        </th>
+                        <!--                        <th class="is-leaf" width="240px">-->
+                        <!--                            <div class="cell">总进球数</div>-->
+                        <!--                        </th>-->
+                    </tr>
+                    <tr class="analyseShow">
+                        <td class="is-leaf">
+                            <div class="mim-flex-vertical cell">
+                                <div class="official-probability-even cut-off"></div>
+                                <div
+                                        class="official-probability-even-message cut-off"
+                                ></div>
+                            </div>
+                        </td>
+                        <td class="is-leaf">
+                            <div class="mim-flex-vertical cell">
+                                <div class="reasonable-chance-init cut-off"></div>
+                            </div>
+                        </td>
+                        <td class="is-leaf">
+                            <div class="mim-flex-vertical cell">
+                                <div class="official-chance-result">暂无分析~</div>
+                                <div class="official-chance cut-off"></div>
+                            </div>
+                        </td>
+                        <td class="is-leaf">
+                            <div class="mim-flex-vertical cell">
+                                <div class="official-chance-result-self">暂无分析~</div>
+                                <div class="official-chance-self cut-off"></div>
+                            </div>
+                        </td>
+                        <!--                        <td class="is-leaf">-->
+                        <!--                            <div class="mim-flex-vertical cell">-->
+                        <!--                                <mim-button type="primary" size="mini" id="goalsFn">-->
+                        <!--                                    输入具体数据分析-->
+                        <!--                                </mim-button>-->
+                        <!--                            </div>-->
+                        <!--                        </td>-->
+                    </tr>
+
+                    <tr class="vipContent">
+                        <th class="is-leaf">
+                            <div class="cell mim-flex-wrap-left">
+                                <img src="./images/vip2.png"
+                                     style="width: 16px; margin-right: 6px"
+                                />
+                                <span class="mimGold">百家初盘与竞彩即盘分析</span>
+                            </div>
+                        </th>
+                        <th class="is-leaf">
+                            <div class="cell mim-flex-wrap-left">
+                                <img src="./images/vip2.png"
+                                     style="width: 16px; margin-right: 6px"
+                                />
+                                <span class="mimGold">VIP数据分析：</span>
+                                <div class="mimRed vip-result"
+                                     style="margin-left: 10px"
+                                ></div>
+                            </div>
+                        </th>
+                        <th class="is-leaf">
+                            <div class="cell mim-flex-wrap-left">
+                                <img src="./images/vip2.png"
+                                     style="width: 16px; margin-right: 6px"
+                                />
+                                <span class="mimGold">水位让球数据分析</span>
+                            </div>
+                        </th>
+                        <th class="is-leaf">
+                            <div class="cell mim-flex-wrap-left">
+                                <img src="./images/vip2.png"
+                                     style="width: 16px; margin-right: 6px"
+                                />
+                                <span class="mimGold">近期状态胜率及赢盘率分析</span>
+                            </div>
+                        </th>
+                    </tr>
+                    <tr class="vipContent">
+                        <td class="analyseShow is-leaf">
+                            <div class="cell mim-flex-wrap-space-between">
+                                <div class="message-particulars mim-ellipsis"
+                                     style="width: 160px"
+                                ></div>
+                                <mim-button type="primary" size="mini" id="messageFn"
+                                >详情
+                                </mim-button
+                                >
+                            </div>
+                        </td>
+                        <td class="analyseShow is-leaf">
+                            <div class="cell mim-flex-wrap-space-between vipHtml"></div>
+                        </td>
+                        <td class="analyseShow is-leaf">
+                            <div class="cell mim-flex-wrap-space-between">
+                                <div class="message-water-level mim-ellipsis"
+                                     style="width: 160px"
+                                ></div>
+                                <mim-button type="primary" size="mini" id="waterLevelFn"
+                                >详情
+                                </mim-button
+                                >
+                            </div>
+                        </td>
+                        <td class="analyseShow is-leaf">
+                            <div
+                                    class="cell mim-flex-wrap-space-between winPlateRateHtml"
+                            ></div>
+                        </td>
+                    </tr>
+                </table>
+            </mim-table>
+        </div>
+        <div class="swiper mySwiper">
+            <div class="swiper-wrapper list">
+                <div class="swiper-slide">
+                    <!--<div class="storm">
+                              <div class="gameTime">周二001·东亚女足</div>
+                              <div class="gameBeginTime">2022-07-19 15:00</div>
+                              <div class="ifStart mimMinor">（未开赛）</div>
+                              <div class="half-court mimMinor">半:[1-0]  加:[0-0]  点:[0-0]</div>
+                              <div class="host_team mim-ellipsis">【主队】<span>日本女足</span> [18]</div>
+                              <div class="vs">VS</div>
+                              <div class="guest_team">【客队】<span>东亚女足</span> [12]</div>
+                          </div>-->
+                </div>
+            </div>
+            <div class="swiper-pagination"></div>
+        </div>
+    </div>
+</div>
+<script src="./js/jquery.min.js"></script>
+<script src="./js/mim-common.js"></script>
+<script src="./js/swiper-bundle.min.js"></script>
+<script src="./js/LeagueName.js"></script>
+<script src="./js/index.js"></script>
+</body>
+</html>

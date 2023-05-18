@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>预测</title>
+    <link rel="stylesheet" href="../css/mim-common.css?12" type="text/css">
+    <link rel="stylesheet" href="../css/compile.css" type="text/css">
+</head>
+<body>
+<div class="compile_div">
+    <mim-loading class="loadingShow"></mim-loading>
+    <mim-row>
+        <mim-col span="24" style="margin: 30px;overflow-y: auto;height: calc(70vh);overflow-x: hidden">
+            <h1 style="font-size: 20px;text-align: center"><strong style="font-size: 20px">主客:</strong><span
+                    style="margin-left: 12px" class="home_team"></span><span class="record"
+                                                                             style="color: #f56c6c;font-size: 30px;margin: 0 12px"></span><span
+                    class="visiting_team"></span></h1>
+            <p><strong>主客近期状态</strong></p>
+            <p>
+                <label class="mim-flex-wrap-left">
+                    <strong>本赛事近十场相同主客胜率:</strong>
+                    <mim-input type="text" placeholder="(主队)本赛事近十场相同主客胜率" class="zRate"></mim-input>
+                    <mim-input type="text" placeholder="(客队)本赛事近十场相同主客胜率" class="kRate"></mim-input>
+                </label>
+            </p>
+            <p>
+                <label class="mim-flex-wrap-left">
+                    <strong>
+                        <lable style="color: #f56c6c">*</lable>
+                        本赛事近十场相同主客赢盘率:</strong>
+                    <mim-input type="text" placeholder="(主队)本赛事近十场相同主客赢盘率" class="zFp"></mim-input>
+                    <mim-input type="text" placeholder="(客队)本赛事近十场相同主客赢盘率" class="kFp"></mim-input>
+                </label>
+            </p>
+            <p>
+                <label class="mim-flex-wrap-left">
+                    <strong>近十场历史交锋胜率:</strong>
+                    <mim-input type="text" placeholder="请输入近期主客交锋胜率" class="win"></mim-input>
+                </label>
+            </p>
+            <p>
+                <label class="mim-flex-wrap-left">
+                    <strong>近十场历史交锋赢盘率:</strong>
+                    <mim-input type="text" placeholder="请输入近期10场主客交锋赢盘率" class="winPlate"></mim-input>
+                </label>
+            </p>
+            <p><strong>
+                <lable style="color: #f56c6c">*</lable>
+                欧指</strong></p>
+            <p>
+                <label>
+                    <strong>降赔公司:</strong>
+                    <mim-input type="text" placeholder="胜" style="width: 15%;margin-right: 10px"
+                               class="suDropComp"></mim-input>
+                    <mim-input type="text" placeholder="平" style="width: 15%;margin-right: 10px"
+                               class="ftDropComp"></mim-input>
+                    <mim-input type="text" placeholder="负" style="width: 15%;margin-right: 10px"
+                               class="erDropComp"></mim-input>
+                </label>
+            </p>
+            <p><strong>
+                <lable style="color: #f56c6c">*</lable>
+                投注比（百分比）</strong></p>
+            <p>
+                <label>
+                    <strong>投注比:</strong>
+                    <mim-input type="text" placeholder="胜" style="width: 15%;margin-right: 10px"
+                               class="suThen"></mim-input>
+                    <mim-input type="text" placeholder="平" style="width: 15%;margin-right: 10px"
+                               class="ftThen"></mim-input>
+                    <mim-input type="text" placeholder="负" style="width: 15%;margin-right: 10px"
+                               class="erThen"></mim-input>
+                </label>
+            </p>
+            <p><strong>必发指数（百分比）</strong></p>
+            <p>
+                <label>
+                    <strong>指数比:</strong>
+                    <mim-input type="text" placeholder="主胜" style="width: 15%;margin-right: 10px"
+                               class="suOutbox"></mim-input>
+                    <mim-input type="text" placeholder="平局" style="width: 15%;margin-right: 10px"
+                               class="ftOutbox"></mim-input>
+                    <mim-input type="text" placeholder="客胜" style="width: 15%;margin-right: 10px"
+                               class="erOutbox"></mim-input>
+                </label>
+            </p>
+            <p><strong>
+                <lable style="color: #f56c6c">*</lable>
+                凯利</strong></p>
+            <p>
+                <label>
+                    <strong>凯利值:</strong>
+                    <mim-input type="text" placeholder="主胜" style="width: 15%;margin-right: 10px"
+                               class="suKl"></mim-input>
+                    <mim-input type="text" placeholder="平局" style="width: 15%;margin-right: 10px"
+                               class="ftKl"></mim-input>
+                    <mim-input type="text" placeholder="客胜" style="width: 15%;margin-right: 10px"
+                               class="erKl"></mim-input>
+                </label>
+            </p>
+            <mim-row style="margin-top: 50px">
+                <mim-col span="24" style="text-align: center">
+                    <mim-button type="primary" class="analyze justAnalyze" data-type="1">+1球分析</mim-button>
+                    <mim-button type="danger" class="analyze loseAnalyze" data-type="2">-1球分析</mim-button>
+                </mim-col>
+            </mim-row>
+        </mim-col>
+    </mim-row>
+</div>
+
+<mim-drawer drawerTitle="分析结果" direction="ttb" size="100%" class="mimDrawer">
+    <mim-drawer-content>
+        <div>
+            <mim-row style="margin-top: 50px">
+                <mim-col span="24" style="text-align: center">
+                    <mim-table border="true">
+                        <table class="mim-table mim-table-header-wrapper">
+                            <tr>
+                                <th colspan="6" class="is-leaf" style="text-align: center;">
+                                    <div class="cell" style="font-size: 20px">基本数据分析</div>
+                                </th>
+                            </tr>
+                            <tr>
+                                <th class="is-leaf" width="200">
+                                    <div class="cell">主客排名实力(纸面实力)分析</div>
+                                </th>
+                                <th class="is-leaf" width="200">
+                                    <div class="cell">实时欧指分析</div>
+                                </th>
+                                <th class="is-leaf" width="200">
+                                    <div class="cell">本赛事近十场相同主客胜率</div>
+                                </th>
+                                <th class="is-leaf" width="250">
+                                    <div class="cell">
+                                        <lable style="color: #f56c6c">*</lable>
+                                        本赛事近十场相同主客赢盘率
+                                    </div>
+                                </th>
+                                <th class="is-leaf" width="200">
+                                    <div class="cell">近十场历史交锋胜率</div>
+                                </th>
+                                <th class="is-leaf" width="200">
+                                    <div class="cell">近十场历史交锋赢盘率</div>
+                                </th>
+                            </tr>
+                            <tr>
+                                <td class="is-leaf" width="200">
+                                    <div class="cell power"></div>
+                                </td>
+                                <td class="is-leaf" width="200">
+                                    <div class="cell oWin"></div>
+                                </td>
+                                <td class="is-leaf" width="200">
+                                    <div class="cell rate"></div>
+                                </td>
+                                <td class="is-leaf" width="250">
+                                    <div class="cell msgFp"></div>
+                                </td>
+                                <td class="is-leaf" width="200">
+                                    <div class="cell win"></div>
+                                </td>
+                                <td class="is-leaf" width="200">
+                                    <div class="cell winPlate"></div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="is-leaf" width="200">
+                                    <div class="cell">
+                                        <lable style="color: #f56c6c">*</lable>
+                                        欧指数降赔公司分析
+                                    </div>
+                                </th>
+                                <th class="is-leaf" width="200">
+                                    <div class="cell">
+                                        <lable style="color: #f56c6c">*</lable>
+                                        投注比分析<br/><span class="thenHtml" style="font-size: 12px;color: #f56c6c"></span>
+                                    </div>
+                                </th>
+                                <th class="is-leaf" width="200">
+                                    <div class="cell">必发指数分析<br/><span class="outboxHtml"
+                                                                       style="font-size: 12px;color: #f56c6c"></span>
+                                    </div>
+                                </th>
+                                <th class="is-leaf" width="200">
+                                    <div class="cell">
+                                        <lable style="color: #f56c6c">*</lable>
+                                        离散值分析
+                                    </div>
+                                </th>
+                                <th class="is-leaf" width="200">
+                                    <div class="cell">
+                                        <lable style="color: #f56c6c">*</lable>
+                                        凯利值分析
+                                    </div>
+                                </th>
+                                <th class="is-leaf" width="200">
+                                    <div class="cell">让球指数</div>
+                                </th>
+                            </tr>
+                            <tr>
+                                <td class="is-leaf" width="200">
+                                    <div class="cell comp"></div>
+                                </td>
+                                <td class="is-leaf" width="200">
+                                    <div class="cell then"></div>
+                                </td>
+                                <td class="is-leaf" width="200">
+                                    <div class="cell outbox"></div>
+                                </td>
+                                <td class="is-leaf" width="200">
+                                    <div class="cell disperse"></div>
+                                </td>
+                                <td class="is-leaf" width="200">
+                                    <div class="cell kelly"></div>
+                                </td>
+                                <th class="is-leaf" width="200">
+                                    <div class="cell exponent"></div>
+                                </th>
+                            </tr>
+                        </table>
+                    </mim-table>
+
+                    <mim-table border="true" style="margin-top: 20px">
+                        <table class="mim-table mim-table-header-wrapper">
+                            <tr>
+                                <th colspan="6" class="is-leaf" style="text-align: center;">
+                                    <div class="cell" style="font-size: 20px">让球数据分析</div>
+                                </th>
+                            </tr>
+                            <tr>
+                                <th class="is-leaf" width="200">
+                                    <div class="cell">初盘</div>
+                                </th>
+                                <th class="is-leaf" width="200">
+                                    <div class="cell">即盘</div>
+                                </th>
+                                <th class="is-leaf" width="200">
+                                    <div class="cell">升赔</div>
+                                </th>
+                                <th class="is-leaf" width="200">
+                                    <div class="cell">降赔</div>
+                                </th>
+                                <th class="is-leaf" width="200">
+                                    <div class="cell">高水</div>
+                                </th>
+                                <th class="is-leaf" width="200">
+                                    <div class="cell">低水</div>
+                                </th>
+                            </tr>
+                        </table>
+                        <table class="mim-table mim-table-body-wrapper">
+                            <tr>
+                                <td class="is-leaf" width="200">
+                                    <div class="cell primaryDisc" style="color: #808080"></div>
+                                </td>
+                                <td class="is-leaf" width="200">
+                                    <div class="cell meanDisc" style="color: #000000"></div>
+                                </td>
+                                <td class="is-leaf" width="200">
+                                    <div class="cell rise" style="color: #f56c6c"></div>
+                                </td>
+                                <td class="is-leaf" width="200">
+                                    <div class="cell drop" style="color: #67C23A"></div>
+                                </td>
+                                <td class="is-leaf" width="200">
+                                    <div class="cell tall" style="color: #f56c6c"></div>
+                                </td>
+                                <th class="is-leaf" width="200">
+                                    <div class="cell low" style="color: #67C23A"></div>
+                                </th>
+                            </tr>
+                        </table>
+                    </mim-table>
+
+                </mim-col>
+            </mim-row>
+            <mim-row style="margin-top: 50px">
+                <mim-col span="8" style="text-align: center">
+                    <div id="main" style="width: 500px;height:500px;margin: auto"></div>
+                </mim-col>
+                <mim-col span="8" style="text-align: center">
+                    <div id="mainColumnar" style="width: 500px;height:500px;margin: auto"></div>
+                </mim-col>
+                <mim-col span="8" style="text-align: center">
+                    <h2>全概率比</h2>
+                    <mim-table border="true">
+                        <table class="mim-table mim-table-header-wrapper">
+                            <tr>
+                                <th class="is-leaf" width="200" style="text-align: center">
+                                    <div class="cell">主胜</div>
+                                </th>
+                                <th class="is-leaf" width="200" style="text-align: center">
+                                    <div class="cell">主负</div>
+                                </th>
+                                <th class="is-leaf" width="200" style="text-align: center">
+                                    <div class="cell">平</div>
+                                </th>
+                            </tr>
+                        </table>
+                        <table class="mim-table mim-table-body-wrapper">
+                            <tr>
+                                <td class="is-leaf" width="200" style="text-align: center">
+                                    <div class="cell suProb"></div>
+                                </td>
+                                <td class="is-leaf" width="200" style="text-align: center">
+                                    <div class="cell errProb"></div>
+                                </td>
+                                <td class="is-leaf" width="200" style="text-align: center">
+                                    <div class="cell flatProb"></div>
+                                </td>
+                            </tr>
+                        </table>
+                    </mim-table>
+                    <h2 style="margin-top: 50px">vip预测数据</h2>
+                    <mim-table border="true">
+                        <table class="mim-table mim-table-header-wrapper vipDiv">
+                            <tr>
+                                <th class="is-leaf" width="200" style="text-align: center">
+                                    <div class="cell use_rq_su"></div>
+                                </th>
+                                <th class="is-leaf" width="200" style="text-align: center">
+                                    <div class="cell use_rq_err"></div>
+                                </th>
+                                <th class="is-leaf" width="200" style="text-align: center">
+                                    <div class="cell use_rq_flat"></div>
+                                </th>
+                            </tr>
+                            <tr>
+                                <td class="is-leaf" width="200" style="text-align: center">
+                                    <div class="cell suVip"></div>
+                                </td>
+                                <td class="is-leaf" width="200" style="text-align: center">
+                                    <div class="cell errVip"></div>
+                                </td>
+                                <td class="is-leaf" width="200" style="text-align: center">
+                                    <div class="cell flatVip"></div>
+                                </td>
+                            </tr>
+                        </table>
+                        <table class="mim-table mim-table-body-wrapper vipDivNone" style="display: none">
+                            <tr>
+                                <td class="is-leaf" style="text-align: center">
+                                    <div class="cell">暂无数据~</div>
+                                </td>
+                            </tr>
+                        </table>
+                    </mim-table>
+                </mim-col>
+            </mim-row>
+            <mim-row style="margin-top: 50px">
+                <mim-col span="8" style="text-align: center">
+                    <div id="mainImport" style="width: 500px;height:500px;margin: auto"></div>
+                </mim-col>
+                <mim-col span="8" style="text-align: center">
+                    <div id="mainColumnarImport" style="width: 500px;height:500px;margin: auto"></div>
+                </mim-col>
+                <mim-col span="8" style="text-align: center">
+                    <h2>重点概率比</h2>
+                    <mim-table border="true">
+                        <table class="mim-table mim-table-header-wrapper">
+                            <tr>
+                                <th class="is-leaf" width="200" style="text-align: center">
+                                    <div class="cell">主胜</div>
+                                </th>
+                                <th class="is-leaf" width="200" style="text-align: center">
+                                    <div class="cell">主负</div>
+                                </th>
+                                <th class="is-leaf" width="200" style="text-align: center">
+                                    <div class="cell">平</div>
+                                </th>
+                            </tr>
+                        </table>
+                        <table class="mim-table mim-table-body-wrapper">
+                            <tr>
+                                <td class="is-leaf" width="200" style="text-align: center">
+                                    <div class="cell suProbImp"></div>
+                                </td>
+                                <td class="is-leaf" width="200" style="text-align: center">
+                                    <div class="cell errProbImp"></div>
+                                </td>
+                                <td class="is-leaf" width="200" style="text-align: center">
+                                    <div class="cell flatProbImp"></div>
+                                </td>
+                            </tr>
+                        </table>
+                    </mim-table>
+                    <h2 style="margin-top: 50px">竞彩官方市场赔率概率</h2>
+                    <mim-table border="true">
+                        <table class="mim-table mim-table-header-wrapper">
+                            <tr>
+                                <th class="is-leaf" width="200" style="text-align: center">
+                                    <div class="cell">主胜</div>
+                                </th>
+                                <th class="is-leaf" width="200" style="text-align: center">
+                                    <div class="cell">主负</div>
+                                </th>
+                                <th class="is-leaf" width="200" style="text-align: center">
+                                    <div class="cell">平</div>
+                                </th>
+                            </tr>
+                        </table>
+                        <table class="mim-table mim-table-body-wrapper">
+                            <tr>
+                                <td class="is-leaf" width="200" style="text-align: center">
+                                    <div class="cell shengProbability"></div>
+                                </td>
+                                <td class="is-leaf" width="200" style="text-align: center">
+                                    <div class="cell fuProbability"></div>
+                                </td>
+                                <td class="is-leaf" width="200" style="text-align: center">
+                                    <div class="cell pingProbability"></div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="is-leaf" width="200" style="text-align: center">
+                                    <div class="cell shengDifference"></div>
+                                </td>
+                                <td class="is-leaf" width="200" style="text-align: center">
+                                    <div class="cell fuDifference"></div>
+                                </td>
+                                <td class="is-leaf" width="200" style="text-align: center">
+                                    <div class="cell pingDifference"></div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="is-leaf" width="200" style="text-align: center">
+                                    <div class="cell shengDifferenceImp"></div>
+                                </td>
+                                <td class="is-leaf" width="200" style="text-align: center">
+                                    <div class="cell fuDifferenceImp"></div>
+                                </td>
+                                <td class="is-leaf" width="200" style="text-align: center">
+                                    <div class="cell pingDifferenceImp"></div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="is-leaf" width="200" style="text-align: center" colspan="3">
+                                    <div class="cell describe" style="font-size: 12px;font-weight: bold;color: #e91e63"></div>
+                                </td>
+                            </tr>
+                        </table>
+                    </mim-table>
+                </mim-col>
+            </mim-row>
+            <mim-row style="margin-top: 50px;text-align: center">
+                <mim-col span="24">
+                    <h2 style="margin-top: 50px">概率汇总</h2>
+                    <mim-table border="true">
+                        <table class="mim-table mim-table-header-wrapper">
+                            <tr>
+                                <th class="is-leaf" width="200" style="text-align: center">
+                                    <div class="cell">全概率比分析</div>
+                                </th>
+                                <th class="is-leaf" width="200" style="text-align: center">
+                                    <div class="cell">重点概率比分析</div>
+                                </th>
+                                <th class="is-leaf" width="200" style="text-align: center" >
+                                    <div class="cell">让球数据分析结果</div>
+                                </th>
+                                <th class="is-leaf" width="200" style="text-align: center" >
+                                    <div class="cell"><lable style="color: #f56c6c">*</lable>vip数据分析结果</div>
+                                </th>
+                                <th class="is-leaf" width="200" style="text-align: center">
+                                    <div class="cell"><lable style="color: #f56c6c">*</lable>市场赔率概率分析结果</div>
+                                </th>
+                            </tr>
+                            <tr>
+                                <td class="is-leaf" width="200" style="text-align: center">
+                                    <div class="cell result-computer"></div>
+                                </td>
+                                <td class="is-leaf" width="200" style="text-align: center">
+                                    <div class="cell result-computer-emphasis"></div>
+                                </td>
+                                <td class="is-leaf" width="200" style="text-align: center" rowspan="2">
+                                    <div class="cell let-ball-result"></div>
+                                </td>
+                                <td class="is-leaf" width="200" style="text-align: center" rowspan="2">
+                                    <div class="cell vip-result"></div>
+                                </td>
+                                <td class="is-leaf" width="200" style="text-align: center" rowspan="2">
+                                    <div class="cell probability-result"></div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="is-leaf" width="200" style="text-align: center">
+                                    <div class="cell result-computer-detail"></div>
+                                </td>
+                                <td class="is-leaf" width="200" style="text-align: center">
+                                    <div class="cell result-computer-emphasis-detail"></div>
+                                </td>
+                            </tr>
+                        </table>
+                    </mim-table>
+                </mim-col>
+            </mim-row>
+            <mim-row style="width: 80%;margin-left: 10%;margin-top: 50px;text-align: right">
+                <mim-col span="24">
+                    <p>
+                        <label>
+                            <strong>预测结果:</strong>
+                            <mim-input type="text" style=" width: 300px" placeholder="请输入预测的结果：例：胜,平,让平"
+                                       class="result"></mim-input>
+                        </label>
+                        <mim-button type="primary" size="medium" style="margin-left: 10px" id="definitive">确定结果
+                        </mim-button>
+                    </p>
+                </mim-col>
+            </mim-row>
+        </div>
+    </mim-drawer-content>
+</mim-drawer>
+
+<script src="../js/jquery.js"></script>
+<script src="../js/mim-common.js?1"></script>
+<script src="../js/echarts.min.js"></script>
+<script src="../js/compile.js"></script>
+</body>
+</html>

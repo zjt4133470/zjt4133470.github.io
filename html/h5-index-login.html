@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>登录</title>
+    <link rel="stylesheet" href="../css/mim-common-h5.css" type="text/css">
+    <style class="cp-pen-styles">
+        body {
+            background: radial-gradient(200% 100% at bottom center, #0070aa, #0b2570, #000035, #000);
+            background: radial-gradient(220% 105% at top center, #000 10%, #000035 40%, #0b2570 65%, #0070aa);
+            background-attachment: fixed;
+            overflow: hidden;
+        }
+
+        @keyframes rotate {
+            0% {
+                transform: perspective(400px) rotateZ(20deg) rotateX(-40deg) rotateY(0);
+            }
+            100% {
+                transform: perspective(400px) rotateZ(20deg) rotateX(-40deg) rotateY(-360deg);
+            }
+        }
+
+        .stars {
+            transform: perspective(500px);
+            transform-style: preserve-3d;
+            position: absolute;
+            bottom: 0;
+            perspective-origin: 50% 100%;
+            left: 50%;
+            animation: rotate 90s infinite linear;
+        }
+
+        .star {
+            width: 2px;
+            height: 2px;
+            background: #F7F7B6;
+            position: absolute;
+            top: 0;
+            left: 0;
+            transform-origin: 0 0 -300px;
+            transform: translate3d(0, 0, -300px);
+            backface-visibility: hidden;
+        }
+
+        .loaginCase {
+            width: 85%;
+            height: 225px;
+            border-radius: 10px;
+            background-image: url("../1.jpg");
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+            position: absolute;
+            padding: 15px;
+            top: 50%;
+            left: 50%;
+            -webkit-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04)
+        }
+    </style>
+</head>
+<body>
+<div class="stars"></div>
+<div class="loaginCase">
+    <h1 style="text-align: center;color: #ffffff;font-size: 30px;margin-top: 20px">竞猜足球</h1>
+    <div class="vipDiv" style="position: absolute;top: 105px;text-align: center;width: 100%;left: 0;display: none">
+        <mim-input type="password" placeholder="身份验证" show-password id="loginPass"></mim-input><mim-button type="primary" size="medium" style="margin-left: 10px" id="btn">确定</mim-button>
+    </div>
+    <div style="position: absolute;bottom: 50px;text-align: center;width: 100%;left: 0">
+        <mim-button type="primary" onclick="goIndex()">游客登录</mim-button>
+        <mim-button type="success" style="margin-left: 50px" onclick="goVipIndex()">会员登录</mim-button>
+    </div>
+</div>
+<script type="text/javascript" src="../js/jquery.js"></script>
+<script type="text/javascript" src="../js/mim-common.js"></script>
+<script type="text/javascript" src='../js/prefixfree.min.js'></script>
+<script type="text/javascript" src='../js/stopExecutionOnTimeout.js'></script>
+<script>
+    var  user = window.localStorage.getItem('user');
+    var key_time = window.location.search.substring(1);
+    if(user){
+        MIM.prompt('已登录', 'danger', 2000);
+        setTimeout(function () {
+            window.location.href = "./h5-index.html?"+key_time;
+        },1500);
+    }
+    //背景
+    $(document).ready(function () {
+        var stars = 1000;
+        var $stars = $('.stars');
+        var r = 1000;
+        for (var i = 0; i < stars; i++) {
+            if (window.CP.shouldStopExecution(1)) {
+                break;
+            }
+            var $star = $('<div/>').addClass('star');
+            $stars.append($star);
+        }
+        window.CP.exitedLoop(1);
+        $('.star').each(function () {
+            var cur = $(this);
+            var s = 0.2 + Math.random() * 1;
+            var curR = r + Math.random() * 300;
+            cur.css({
+                transformOrigin: '0 0 ' + curR + 'px',
+                transform: ' translate3d(0,0,-' + curR + 'px) rotateY(' + Math.random() * 360 + 'deg) rotateX(' + Math.random() * -50 + 'deg) scale(' + s + ',' + s + ')'
+            });
+        });
+    });
+    function goIndex() {
+        window.location.href = "./h5-index.html?"+key_time;
+        localStorage.setItem("user","2")
+    }
+    function goVipIndex() {
+        $(".vipDiv").show()
+    }
+    $("#btn").on("click",function () {
+        if($("#loginPass").val() !== "admin"){
+            MIM.prompt('密码错误', 'danger', 2000);
+        }else{
+            window.location.href = "./h5-index.html?"+key_time;
+            localStorage.setItem("user","1")
+        }
+    })
+</script>
+</body>
+</html>

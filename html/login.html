@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>登录</title>
+    <link rel="stylesheet" href="../css/mim-common.css" />
+    <link rel="stylesheet" href="../css/login.css" />
+    <link rel="stylesheet" href="../css/swiper-bundle.min.css" />
+  </head>
+  <body>
+    <div id="M">
+      <!-- Swiper -->
+      <div class="swiper mySwiper">
+        <div class="swiper-wrapper">
+          <div class="swiper-slide">
+            <div
+              class="loginCase"
+              style="background-image: url('../images/1.jpg')"
+            >
+              <h1 class="aiH">AI足球</h1>
+              <div
+                style="
+                  position: absolute;
+                  bottom: 50px;
+                  text-align: center;
+                  width: 100%;
+                  left: 0;
+                "
+              >
+                <mim-button type="primary" id="ordinaryLogin"
+                  >用户登录</mim-button
+                >
+              </div>
+            </div>
+          </div>
+          <div class="swiper-slide">
+            <div
+              class="loginCase"
+              style="background-image: url('../images/vip.png')"
+            >
+              <h1 class="aiHVip" style="margin-bottom: 50px">AI足球(VIP)</h1>
+              <mim-input
+                type="password"
+                placeholder="身份验证"
+                show-password
+                class="loginPass"
+              ></mim-input>
+              <div
+                style="
+                  position: absolute;
+                  bottom: 50px;
+                  text-align: center;
+                  width: 100%;
+                  left: 0;
+                "
+              >
+                <mim-button
+                  type="success"
+                  style="background: #000000"
+                  id="vipLogin"
+                  >会员登录</mim-button
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="../js/jquery.min.js"></script>
+    <script src="../js/mim-common.js"></script>
+    <script src="../js/swiper-bundle.min.js"></script>
+    <script src="../js/crypto-js.min.js"></script>
+    <script>
+      var arrowFunction = 'var t = () => {};'
+      try {
+        f = new Function(arrowFunction)
+      } catch (e) {
+        MIM.prompt('当前浏览器不支持該頁面!', 'danger', 2000, false)
+      }
+      let swiper = new Swiper('.mySwiper', {
+        // loop: true,
+      })
+      let user = window.localStorage.getItem('user')
+      if (user) {
+        MIM.notification('$notify', {
+          title: '温馨提示',
+          message: '您已经登录~',
+          duration: 1500,
+          type: 'danger',
+          position: 'top-right',
+          showClose: true,
+        })
+        setTimeout(function () {
+          window.location.href = '../index.html'
+        }, 1500)
+      }
+
+      //普通登录/vip登陆
+      $('.mySwiper .swiper-slide')
+        .on('click', '#ordinaryLogin', () => {
+          window.location.href = '../index.html'
+          localStorage.setItem('user', '2')
+        })
+        .on('click', '#vipLogin', () => {
+          let pass = CryptoJS.MD5($('.loginPass').val()).toString()
+          if (pass !== '21232f297a57a5a743894a0e4a801fc3') {
+            MIM.prompt('密码错误!', 'danger', 2000, false)
+          } else {
+            window.location.href = '../index.html'
+            localStorage.setItem('user', '1')
+          }
+        })
+    </script>
+  </body>
+</html>

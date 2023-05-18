@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>竞猜足球</title>
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <link rel="stylesheet" href="../css/mim-common-h5.css" type="text/css">
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            font-size: 14px;
+            color: #343434;
+        }
+        header {
+            background: #409eff;
+            color: #ffffff;
+            height: 100px;
+            font-size: 20px;
+        }
+        #spanid{
+            font-size: 20px;
+            color: #ffffff;
+        }
+        .cont mim-col{
+            height: 100px;
+            line-height: 100px;
+            position: relative;
+        }
+        .cont mim-col div{
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
+            border-radius: 4px;
+        }
+        .time,.user{
+            position: absolute;
+            font-size: 12px;
+            color: #f56c6c;
+            top: 20px;
+            height: 17px;
+            line-height: 17px;
+            left: 26%;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1 style="font-size: 20px;float: left;margin: 30px"><span id="spanid">竞猜足球</span></h1>
+</header>
+<div class="screen" style="width: 100%;background-color: #ffffff;text-align: center;margin-top: 20px">
+    <label>选择日期：</label><mim-select bool="false" id="timeSelect" placeholder="请选择日期" style="text-align: left"></mim-select>
+</div>
+<div class="cont" style="margin-top: 20px">
+    <mim-row>
+        <mim-col span="8" onclick="gotoDetailed('./h5-message.html',this)" style="margin-left: 12px;margin-right: 12px"><div><p class="time"></p><strong>赛事信息</strong></div></mim-col>
+        <mim-col span="8" onclick="gotoDetailed('./h5-forthwith.html',this)" style="margin-left: 0;margin-right: 0"> <div><p class="time"></p><strong>即时欧赔</strong></div></mim-col>
+        <mim-col span="8" onclick="gotoDetailed('./h5-result.html',this)" style="margin-left: 12px;margin-right: 12px"> <div><p class="time"></p><strong>比赛结果</strong></div></mim-col>
+    </mim-row>
+    <mim-row style="margin-top: 14px">
+        <mim-col span="8" onclick="gotoDetailed('./h5-forecast.html',this)" style="margin-left: 12px;margin-right: 12px"><div><p class="time"></p><strong>预测结果</strong></div></mim-col>
+        <mim-col span="8" onclick="gotoDetailed('./h5-red.html',this)" style="margin-left: 0;margin-right: 0"><div><p class="time"></p><strong>是否红单</strong></div></mim-col>
+        <mim-col span="8" onclick="goToLogin()" style="margin-left: 12px;margin-right: 12px;"><div><p class="user" style="left: 35%"></p><strong>退出登录</strong></div></mim-col>
+    </mim-row>
+    <mim-row style="margin-top: 14px;">
+        <mim-col span="12" onclick="goToPredict(this)" style="margin-left: 25%;margin-right: 0" class="forecast"> <div><p class="time" style="left: 35%"></p><strong>点击去预测</strong></div></mim-col>
+    </mim-row>
+</div>
+<script src="../js/jquery.js"></script>
+<script src="../js/mim-common.js"></script>
+<script src="../js/h5-index.js"></script>
+<script>
+    var key_time_s = '';
+    initializeTime();
+    function initializeTime() {
+        var time = new Date();
+        var year = time.getFullYear();
+        var month = time.getMonth() + 1;
+        var day = time.getDate();
+        month = month < 10 ? "0" + month : month;
+        day = day < 10 ? "0" + day : day;
+        key_time_s = year + '-' + month + '-' + day;
+    }
+    function goToLogin() {
+        window.location.href = "./h5-index-login.html?"+key_time_s;
+        window.localStorage.clear();
+    }
+    function gotoDetailed(url,that) {
+        window.location.href = url+'?'+$(that).find('.time').html();
+    }
+    function goToPredict(that) {
+        window.location.href = './h5-compile.html?'+$(that).find('.time').html();
+    }
+</script>
+</body>
+</html>
