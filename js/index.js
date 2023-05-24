@@ -40,6 +40,11 @@
         "rate": {z: "", f: ""},//本赛事近十场相同主客胜率
         "plate": {z: "", f: ""},//本赛事近十场相同主客赢盘率
     };//单场场次数据
+    //abc 是赔率 bcd 是概率
+    const organization = {
+        'abc': {win: "", flat: '', lose: ''},
+        'bcd': {win: "", flat: '', lose: ''}
+    }
 
     let set = null // 定时器
     let bool = false;//是否开启同步数据
@@ -492,7 +497,7 @@
                 minute = "0" + minute;
             }
             let timeFormatted = year + "年" + month + "月" + day + "日 " + hour + ":" + minute;
-            const textToCopy = '请查询分析预测一下北京时间' + timeFormatted + ' 举行的' + LeagueName(name) + '（请使用最新数据注意到数据的时间保证实时最新数据） （主队）' + zhu + '对战' + ke + '（客队） 请根据你能查询到的历史数据和近期球员表现数据，结合你查到的今天比赛需要的比赛场地和气候情况，以及两队近期（请结合最新的本年度本赛季本联赛的数据请查询天天盈球软件的官方最新数据（截止到我提问的时间）请写出二队的最新积分和排名情况）的分别在本赛季本联赛与其余队伍交手记录和球员状态数据以及球员伤病数据和主场优势数据和你所能查到的能够影响比赛结果的数据（例如盘口，赔率，凯利，必发，离散，同赔等数据）来给我分析一下最有可能的进球数范围（请尽可能缩小范围），及最有可能的比分结果（最好用泊松公式来计算，最好是最精确的2个比分结果），以及是否可以考虑双边进球，和胜平负和让球胜平负建议，以及半场胜平负的建议，最后请给我合理的建议，并对自己的建议内容分别做一个信心指数的分析（打分标准1-10分）。'
+            const textToCopy = '请根据最新数据查询分析预测一下北京时间' + timeFormatted + ' 举行的' + LeagueName(name) + '（请使用最新数据注意到数据的时间保证实时最新数据） （主队）' + zhu + '对战' + ke + '（客队） 请根据你能查询到的历史数据和近期球员表现数据，结合你查到的今天比赛需要的比赛场地和气候情况，以及两队近期（请结合最新的本年度本赛季本联赛的数据请查询天天盈球软件的官方最新数据（截止到我提问的时间）请写出二队的最新积分和排名情况）的分别在本赛季本联赛与其余队伍交手记录和球员状态数据以及球员伤病数据和主场优势数据和你所能查到的能够影响比赛结果的数据（例如盘口，赔率，凯利，必发，离散，同赔等数据）来给我分析一下最有可能的进球数范围（请尽可能缩小范围），及最有可能的比分结果（最好用泊松公式来计算，最好是最精确的2个比分结果），以及是否可以考虑双边进球，和胜平负和让球胜平负建议，以及半场胜平负的建议，最后请给我合理的建议，并对自己的建议内容分别做一个信心指数的分析（打分标准1-10分）。'
 
             navigator.clipboard.writeText(textToCopy)
                 .then(() => {
@@ -609,6 +614,7 @@
 
     $(".firstShow").on("click", () => {
         $(".firstShow").empty().hide();
+        console.log($(".firstShow").find('input'), "input 个数")
     })
     $(".secondShow").on("click", () => {
         $(".secondShow").empty().hide();
@@ -621,6 +627,22 @@
         });
         $(".goals-scored").html("")
         $(".goals-scored-number").html("")
+    })
+    $(".fourShow .delOutShow").on("click", () => {
+        let element = $(".fourShow").find(".cell");
+        $(".fourShow input").val("");
+        $(".fourShow").hide()
+        $(".fourShow .v-m").html("")
+        if (element.hasClass("mimGreen") || element.hasClass("mimRed") || element.hasClass("mimBlue")) {
+            element.removeClass("mimGreen mimRed mimBlue")
+        }
+        organization.abc.win = ''
+        organization.abc.pink = ''
+        organization.abc.lose = ''
+        organization.bcd.win = ''
+        organization.bcd.pink = ''
+        organization.bcd.lose = ''
+
     })
 
     //主胜样式
@@ -1134,7 +1156,6 @@
             wlb_conclusion = "不做判断";
         }
 
-
         $(".firstShow").append("<img src=\"./images/out.png\" class='delOutShow'>\n" +
             "            <p>机构理论利润率：<span>" + (theoryProfit * 100).toFixed(2) + "%</span></p>\n" +
             "            <p>机构合理赔率：主胜合理赔率：<span>" + winLoss.toFixed(2) + "</span>；平合理赔率：<span>" + pinkLoss.toFixed(2) + "</span>；客胜合理赔率：<span>" + errLoss.toFixed(2) + "</span></p>\n" +
@@ -1152,8 +1173,78 @@
             "                <p>立博方向：<span>" + wlb_conclusion + " (" + j + "," + k + "," + l + ")</span></p>\n" +
             "            </div>")
 
-    }
+        //abc 是赔率 bcd 是概率
+        organization.abc.win = Number(winLoss.toFixed(2))
+        organization.abc.pink = Number(pinkLoss.toFixed(2))
+        organization.abc.lose = Number(errLoss.toFixed(2))
 
+        organization.bcd.win = Number(winProbability.toFixed(2))
+        organization.bcd.pink = Number(pinkProbability.toFixed(2))
+        organization.bcd.lose = Number(errProbability.toFixed(2))
+
+    }
+    //开始计算价值分析结果
+    $(".beginCalculateResult").on("click", () => {
+        //机构赔率
+        let a = organization.abc.win
+        let b = organization.abc.pink
+        let c = organization.abc.lose
+        //机构概率
+        let d = organization.bcd.win
+        let e = organization.bcd.pink
+        let f = organization.bcd.lose
+        //泊松获取到的赔率
+        let sp = Number($(".abc_i-s-p").val())
+        let pp = Number($(".abc_i-p-p").val())
+        let fp = Number($(".abc_i-f-p").val())
+        //泊松获取到的概率
+        let sg = Number($(".bcd_i-s-g").val())
+        let pg = Number($(".bcd_i-p-g").val())
+        let fg = Number($(".bcd_i-f-g").val())
+        if (sp && pp && fp && sg && pg && fg) {
+            // console.log(a, b, c, d, e, f, "111111111")
+            // console.log(sg, pg, fg, sp, pp, fp, "222222")
+            //概率价值
+            let aa = Number(((sg - d) / d).toFixed(4))
+            let bb = Number(((pg - e) / e).toFixed(4))
+            let cc = Number(((fg - f) / f).toFixed(4))
+            //赔率价值
+            let dd = Number(((a - sp) / sp).toFixed(4))
+            let ee = Number(((b - pp) / pp).toFixed(4))
+            let ff = Number(((c - fp) / fp).toFixed(4))
+            $(".aa_v-m").html((aa * 100).toFixed(2) + '%')
+            $(".bb_v-m").html((bb * 100).toFixed(2) + '%')
+            $(".cc_v-m").html((cc * 100).toFixed(2) + '%')
+            $(".dd_v-m").html((dd * 100).toFixed(2) + '%')
+            $(".ee_v-m").html((ee * 100).toFixed(2) + '%')
+            $(".ff_v-m").html((ff * 100).toFixed(2) + '%')
+            //综合价值
+            let zh_aa = Number(((aa + dd) / 2 * 100).toFixed(2))
+            let zh_bb = Number(((bb + ee) / 2 * 100).toFixed(2))
+            let zh_cc = Number(((cc + ff) / 2 * 100).toFixed(2))
+            $(".zh_aa_v-m").html(zh_aa)
+            $(".zh_bb_v-m").html(zh_bb)
+            $(".zh_cc_v-m").html(zh_cc)
+            if (zh_aa > 0 && zh_aa >= 20) {
+                $(".zh_aa_v-m").addClass("mimGreen")
+                $(".beginCalculateResult_v-m").addClass("mimGreen").html("胜")
+            }
+            if (zh_bb > 0 && zh_bb >= 20) {
+                $(".zh_bb_v-m").addClass("mimBlue")
+                $(".beginCalculateResult_v-m").addClass("mimBlue").html("平")
+            }
+            if (zh_cc > 0 && zh_cc >= 20) {
+                $(".zh_cc_v-m").addClass("mimRed")
+                $(".beginCalculateResult_v-m").addClass("mimRed").html("负")
+            }
+            if (zh_aa < 20 && zh_bb < 20 && zh_cc < 20) {
+                $(".beginCalculateResult_v-m").html("没有价值或价值过低不建议购买")
+            }
+        } else {
+            $.prompt('请输入完整数据', 'danger', 2000, false);
+        }
+
+    });
     //点击打开总进球数的分析
     $("#goalsFn").on("click", () => {
         $(".threeShow").show();
@@ -2684,7 +2775,18 @@
         preliminaryContest(sonData.bjInit.win, sonData.bjInit.flat, sonData.bjInit.lose,
             sonData.jcTimely.win, sonData.jcTimely.flat, sonData.jcTimely.lose,
             sonData.wlxInit.win, sonData.wlxInit.flat, sonData.wlxInit.lose,
-            sonData.wlbInit.win, sonData.wlbInit.flat, sonData.wlbInit.lose,
+            sonData.wlbInit.win, sonData.wlbInit.flat, sonData.wlbInit.lose
+        );
+    });
+
+    //开始价值的分析
+    $("#analyse_value").on("click", () => {
+        $(".fourShow").show();
+        //百家初盘与竞彩即盘分析
+        preliminaryContest(sonData.bjInit.win, sonData.bjInit.flat, sonData.bjInit.lose,
+            sonData.jcTimely.win, sonData.jcTimely.flat, sonData.jcTimely.lose,
+            sonData.wlxInit.win, sonData.wlxInit.flat, sonData.wlxInit.lose,
+            sonData.wlbInit.win, sonData.wlbInit.flat, sonData.wlbInit.lose
         );
     });
 

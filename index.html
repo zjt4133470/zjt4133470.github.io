@@ -8,6 +8,20 @@
     <link rel="stylesheet" href="./css/mim-common.css"/>
     <link rel="stylesheet" href="./css/swiper-bundle.min.css"/>
     <link rel="stylesheet" href="./css/index.css"/>
+    <style>
+        /*@media screen and (orientation: landscape) {*/
+        /*    html, body {*/
+        /*        transform: rotate(90deg);*/
+        /*        transform-origin: left top;*/
+        /*        width: 100vh;*/
+        /*        height: 100vw;*/
+        /*        overflow-x: hidden;*/
+        /*        position: fixed;*/
+        /*        top: 0;*/
+        /*        left: 0;*/
+        /*    }*/
+        /*}*/
+    </style>
 </head>
 <body>
 <div id="M">
@@ -68,6 +82,8 @@
                   <p>威廉希尔方向：<span style="font-size: 18px;"></span></p>
                   <p>立博方向：<span style="font-size: 18px;"></span></p>
               </div>-->
+
+
         </div>
 
         <div class="secondShow">
@@ -618,6 +634,103 @@
             </div>
         </div>
 
+        <div class="fourShow">
+            <img src="./images/out.png" class="delOutShow"/>
+            <div style="text-align: center;margin: 48px auto 24px;">
+                <mim-table style="text-align: center" border="true" id="fiveShow-table">
+                    <table class="mim-table mim-table-header-wrapper">
+                        <tr>
+                            <th class="is-leaf" width="360">
+                                <div class="cell">泊松分布概率价值</div>
+                            </th>
+                            <th class="is-leaf" width="360">
+                                <div class="cell">泊松分布赔率价值</div>
+                            </th>
+                        </tr>
+                    </table>
+                    <table class="mim-table mim-table-body-wrapper">
+                        <tr>
+                            <td class="is-leaf" width="120">
+                                <div class="cell">胜：<b class="v-m aa_v-m"></b></div>
+                            </td>
+                            <td class="is-leaf" width="120">
+                                <div class="cell">平：<b class="v-m bb_v-m"></b></div>
+                            </td>
+                            <td class="is-leaf" width="120">
+                                <div class="cell">负：<b class="v-m cc_v-m"></b></div>
+                            </td>
+                            <td class="is-leaf" width="120">
+                                <div class="cell">胜：<b class="v-m dd_v-m"></b></div>
+                            </td>
+                            <td class="is-leaf" width="120">
+                                <div class="cell">平：<b class="v-m ee_v-m"></b></div>
+                            </td>
+                            <td class="is-leaf" width="120">
+                                <div class="cell">负：<b class="v-m ff_v-m"></b></div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="is-leaf" width="120">
+                                <div class="cell">
+                                    <mim-input type="tel" class="i-s-g bcd_i-s-g"></mim-input>
+                                </div>
+                            </td>
+                            <td class="is-leaf" width="120">
+                                <div class="cell">
+                                    <mim-input type="tel" class="i-p-g bcd_i-p-g"></mim-input>
+                                </div>
+                            </td>
+                            <td class="is-leaf" width="120">
+                                <div class="cell">
+                                    <mim-input type="tel" class="i-f-g bcd_i-f-g"></mim-input>
+                                </div>
+                            </td>
+                            <td class="is-leaf" width="120">
+                                <div class="cell">
+                                    <mim-input type="tel" class="i-s-p abc_i-s-p"></mim-input>
+                                </div>
+                            </td>
+                            <td class="is-leaf" width="120">
+                                <div class="cell">
+                                    <mim-input type="tel" class="i-p-p abc_i-p-p"></mim-input>
+                                </div>
+                            </td>
+                            <td class="is-leaf" width="120">
+                                <div class="cell">
+                                    <mim-input type="tel" class="i-f-p abc_i-f-p"></mim-input>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                    <table class="mim-table mim-table-body-wrapper">
+                        <tr>
+                            <td class="is-leaf" width="240">
+                                <div class="cell">综合胜价值：<b class="v-m zh_aa_v-m"></b></div>
+                            </td>
+                            <td class="is-leaf" width="240">
+                                <div class="cell">综合平价值：<b class="v-m zh_bb_v-m"></b></div>
+                            </td>
+                            <td class="is-leaf" width="240">
+                                <div class="cell">综合负价值：<b class="v-m zh_cc_v-m"></b></div>
+                            </td>
+                        </tr>
+                    </table>
+                    <table class="mim-table mim-table-header-wrapper">
+                        <tr>
+                            <th class="is-leaf" width="720">
+                                <div class="cell">
+                                    综上数据最有价值的投注为:
+                                    <b class="beginCalculateResult_v-m v-m" style="font-size: 24px">
+                                </div>
+                            </th>
+                        </tr>
+                    </table>
+                </mim-table>
+                <mim-button type="primary" class="beginCalculateResult" style="margin-top: 24px">开始计算结果
+                </mim-button>
+            </div>
+        </div>
+
         <div class="particularsDiv">
             <mim-table stripe="true" border="true" style="width: 100%">
                 <table class="mim-table mim-table-header-wrapper">
@@ -934,6 +1047,14 @@
                                 <span class="mimGold">近期状态胜率及赢盘率分析</span>
                             </div>
                         </th>
+                        <th class="is-leaf">
+                            <div class="cell mim-flex-wrap-left">
+                                <img src="./images/vip2.png"
+                                     style="width: 16px; margin-right: 6px"
+                                />
+                                <span class="mimGold">价值分析</span>
+                            </div>
+                        </th>
                     </tr>
                     <tr class="vipContent">
                         <td class="analyseShow is-leaf">
@@ -965,6 +1086,13 @@
                             <div
                                     class="cell mim-flex-wrap-space-between winPlateRateHtml"
                             ></div>
+                        </td>
+                        <td class="analyseShow is-leaf">
+                            <div class="cell mim-flex-wrap-space-between">
+                                <mim-button type="primary" size="mini" id="analyse_value">
+                                    点击开始分析
+                                </mim-button>
+                            </div>
                         </td>
                     </tr>
                 </table>
